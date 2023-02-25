@@ -11,6 +11,9 @@ openai.api_key = "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"
 #Need a counter function to create unique file names for each image prompt
 counter = 1
 
+#print instructions to the user
+print ("This is a Codenames image generation tool. You will be able to build your own codenames board by entering as many image ideas as you'd like and then typing `done`. These images will save to your desktop and you can print and play with your friends.")
+
 # Loop to let the user continue entering images until they enter done
 
 while True:
