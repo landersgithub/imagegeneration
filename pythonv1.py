@@ -6,7 +6,7 @@ from io import BytesIO
 import os
 
 
-openai.api_key = "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"
+openai.api_key = "ENTER YOUR OpenAI API KEY HERE"
 
 #Need a counter function to create unique file names for each image prompt
 counter = 1
