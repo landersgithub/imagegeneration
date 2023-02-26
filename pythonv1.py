@@ -6,23 +6,33 @@ from io import BytesIO
 import os
 
 
-openai.api_key = "ENTER YOUR OpenAI API KEY HERE"
-
-#Need a counter function to create unique file names for each image prompt
-counter = 1
+openai.api_key = "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"
 
 #print instructions to the user
-print ("This is a Codenames image generation tool. You will be able to build your own codenames board by entering as many image ideas as you'd like and then typing `done`. These images will save to your desktop and you can print and play with your friends.")
+print ("There is nothing worse than running out of squares in Codenames. This is a Codenames image generation tool powered by text completion endpoint. Each time this script is ran, it will generate 10 more random images for you to print and use when playing codenames.")
 
-# Loop to let the user continue entering images until they enter done
+#Generate 10 random images
+data = {
+    "model": "text-davinci-002",
+    "prompt": "Generate random words, not numbers, and make sure no words are the same:",
+    "temperature": 0.5,
+    "max_tokens": 30,
+    "n": 10,
+    "stop": "."
 
-while True:
-    #prompt user for image and enter done when completed
-    prompt = input("Enter an image prompt (or `done` to finish): ")
-    if prompt == "done":
-        break
+}
 
 
+response = openai.Completion.create(engine="text-davinci-002", prompt=data['prompt'], max_tokens=data['max_tokens'], temperature=data['temperature'], n=data['n'], stop=data['stop'])
+prompts = response.choices
+prompts = [prompt.text.strip() for prompt in prompts]
+
+
+
+# Loop through the generated prompts and generate and save the corresponding images
+
+for i, prompt in enumerate(prompts):
+    
     #Set up the request headers
     headers = {
         "Content-Type": "application/json",
@@ -49,26 +59,17 @@ while True:
     response_data = response.json()
     image_url = response_data["data"][0]["url"]
 
-    #Do something with the generated image, such as display it
-    #print (image_url)
 
-    # Download the generated image from the URL using Pillow
+    
     response = requests.get(image_url)
     image = Image.open(BytesIO(response.content))
 
 
     # Save the downloaded image to the full file path
-    file_name = f"generated_image{counter}.png"
+    file_name = f"generated_image{i+1}.png"
     file_path = os.path.join(os.path.expanduser("~/Desktop"), file_name)
-
-    #file_path = (/Users/josephlanders/Desktop/)", file_name)
-    #print(file_path)
     image.save(file_path)
-
-
-    #Increment the counter for the next image
-
-    counter += 1
+    
 
 print("Done generating images. Please go check your Desktop and have fun playing!")
 
