@@ -6,7 +6,7 @@ from io import BytesIO
 import os
 
 
-openai.api_key = "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"
+openai.api_key = "INSERT OPENAI API KEY HERE"
 
 #print instructions to the user
 print ("There is nothing worse than running out of squares in Codenames. This is a Codenames image generation tool powered by text completion endpoint. Each time this script is ran, it will generate 10 more random images for you to print and use when playing codenames.")
